@@ -2,15 +2,28 @@
 <resources>
 
     <string name="app_name">Sunshine</string>
-    <string name="hello_world">Hello world!</string>
+
     <string name="action_settings">Settings</string>
+
+    <!-- Menu label to fetch updated weather info into from the server -->
     <string name="action_refresh" translatable="false">Refresh</string>
     <string name="title_activity_detail">Details</string>
     <string name="title_activity_settings">Settings</string>
 
+    <!-- String related to Location setting -->
     <string name="pref_location_label">Location</string>
-    <string name="pref_location_key" translatable="false">location</string>
-    <string name="pref_location_default" translatable="false">94043</string>
+    <string name="pref_location_key">location</string>
+    <string name="pref_location_default">94043</string>
+
+    <!-- String related to units setting -->
+    <string name="pref_units_label">Temperature Units</string>
+    <string name="pref_units_key">Units</string>
+    <string name="pref_units_metric">metric</string>
+    <string name="pref_units_imperial">imperial</string>
+
+    <!-- String related to action map -->
+    <string name="action_map">Map Location</string>
+    <string name="action_share">Share</string>
 
 
 </resources>
