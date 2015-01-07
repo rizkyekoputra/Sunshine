@@ -1,14 +1,11 @@
 package api.sunshine;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
 
 
 public class MainActivity extends ActionBarActivity {
@@ -47,8 +44,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     //about get map location
-    private void openPreferredLocationInMap() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.);
+    /*private void openPreferredLocationInMap() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences();
         String location = sharedPrefs.getString(
                 getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default));
@@ -66,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
             Log.d(LOG_TAG, "Couldn't call " + location + ", no");
         }
 
-    }
+    }*/
 
     /**
      * A placeholder fragment containing a simple view.
