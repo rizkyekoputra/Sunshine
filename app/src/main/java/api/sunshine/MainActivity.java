@@ -10,8 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
-
 public class MainActivity extends ActionBarActivity {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -50,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
 
     //about get map location
     private void openPreferredLocationInMap() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String location = sharedPrefs.getString(
                 getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default));
@@ -60,18 +58,12 @@ public class MainActivity extends ActionBarActivity {
                 .build();
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        //Intent.setData(geoLocation);
+        intent.setData(geoLocation);
 
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         } else {
-            Log.d(LOG_TAG, "Couldn't call " + location + ", no");
+            Log.d(LOG_TAG, "Couldn't call " + location + ", no receiving apps installed!");
         }
-
     }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-
 }
