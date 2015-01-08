@@ -95,15 +95,16 @@ public class DetailActivity extends ActionBarActivity {
             MenuItem menuItem = menu.findItem(R.id.action_share);
 
             // Get the provider and hold onto it to set/change the share intent.
-            /*ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+            //ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
             // Attach an intent to this ShareActionProvider. You can update this anytime,
             // like when the user selects a new piece of data they might like to share.
-            if (mShareActionProvider != null) {
+            /*if (mShareActionProvider != null) {
                 mShareActionProvider.setShareIntent(createShareForecastIntent());
             } else {
-                Log.d(LOG_TAG, "Share Action Provider is null?");
+                Log.d(LOG_TAG, "Share Action Provider null?");
             }*/
+
         }
     }
 }
