@@ -16,9 +16,11 @@
 package api.sunshine;
 
 import android.annotation.TargetApi;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Build;
 import android.test.AndroidTestCase;
 import android.util.Log;
@@ -37,19 +39,13 @@ public class TestProvider extends AndroidTestCase {
 
     public void testInsertReadProvider() {
 
-        // If there's an error in those massive SQL table creation Strings,
-        // errors will be thrown here when you try to get a writable database.
-        WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         ContentValues testValues = TestDb.createNorthPoleLocationValues();
 
-        long locationRowId;
-        locationRowId = db.insert(LocationEntry.TABLE_NAME, null, testValues);
+        Uri locationUri = mContext.getContentResolver().insert(LocationEntry.CONTENT_URI, testValues);
+        long locationRowId = ContentUris.parseId(locationUri);
 
         // Verify we got a row back.
         assertTrue(locationRowId != -1);
-        Log.d(LOG_TAG, "New row id: " + locationRowId);
 
         // Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
         // the round trip.
@@ -79,8 +75,9 @@ public class TestProvider extends AndroidTestCase {
         // Fantastic.  Now that we have a location, add some weather!
         ContentValues weatherValues = TestDb.createWeatherValues(locationRowId);
 
-        long weatherRowId = db.insert(WeatherEntry.TABLE_NAME, null, weatherValues);
-        assertTrue(weatherRowId != -1);
+        Uri weatherInsertUri = mContext.getContentResolver()
+                .insert(WeatherEntry.CONTENT_URI, weatherValues);
+        assertTrue(weatherInsertUri != -1);
 
         // A cursor is your primary interface to the query results.
         Cursor weatherCursor = mContext.getContentResolver().query(
@@ -118,7 +115,16 @@ public class TestProvider extends AndroidTestCase {
         );
         TestDb.validateCursor(weatherCursor, weatherValues);
 
-        dbHelper.close();
+        // Get the joined Weather data for a specific date
+        weatherCursor = mContext.getContentResolver().query(
+                WeatherEntry.buildWeatherLocationWithDate(TestDb.TEST_LOCATION, TestDb.TEST_DATE),
+                null,
+                null,
+                null,
+                null
+        );
+
+        TestDb.validateCursor(weatherCursor, weatherValues)
     }
 
     public void testGetType() {
