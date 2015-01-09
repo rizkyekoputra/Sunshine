@@ -90,7 +90,7 @@ public class WeatherProvider extends ContentProvider {
                 sortOrder
         );
     }
-
+  
     private static UriMatcher buildUriMatcher() {
         // I know what you're thinking.  Why create a UriMatcher when you can use regular
         // expressions instead?  Because you're not crazy, that's why.
