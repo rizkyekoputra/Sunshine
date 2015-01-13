@@ -29,14 +29,14 @@ public class Utility {
                 .equals(context.getString(R.string.pref_units_metric));
     }
 
-    static String formatTemperature(double temperature, boolean isMetric) {
+    static String formatTemperature(Context context, double temperature, boolean isMetric) {
         double temp;
         if ( !isMetric ) {
             temp = 9*temperature/5+32;
         } else {
             temp = temperature;
         }
-        return String.format("%.0f", temp);
+        return context.getString(R.string.format_temperature, temp);
     }
 
     static String formatDate(String dateString) {
@@ -72,10 +72,11 @@ public class Utility {
         // is "Today, June 24"
         if (todayStr.equals(dateStr)) {
             String today = context.getString(R.string.today);
-            return context.getString(
-                    R.string.format_full_friendly_date,
+            int formatId = R.string.format_full_friendly_date;
+            return String.format(context.getString(
+                    formatId,
                     today,
-                    getFormattedMonthDay(context, dateStr));
+                    getFormattedMonthDay(context, dateStr)));
         } else {
             Calendar cal = Calendar.getInstance();
             cal.setTime(todayDate);
@@ -143,7 +144,7 @@ public class Utility {
         SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
         try {
             Date inputDate = dbDateFormat.parse(dateStr);
-            SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMM dd");
+            SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd");
             String monthDayString = monthDayFormat.format(inputDate);
             return monthDayString;
         } catch (ParseException e) {
