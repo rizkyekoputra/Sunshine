@@ -41,15 +41,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private ShareActionProvider mShareActionProvider;
     private String mLocation;
     private String mForecast;
+    private String mDateStr;
 
     private static final int DETAIL_LOADER = 0;
 
     private static final String[] FORECAST_COLUMNS = {
-            WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
-            WeatherContract.WeatherEntry.COLUMN_DATETEXT,
-            WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
-            WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
+            WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
+            WeatherEntry.COLUMN_DATETEXT,
+            WeatherEntry.COLUMN_SHORT_DESC,
+            WeatherEntry.COLUMN_MAX_TEMP,
+            WeatherEntry.COLUMN_MIN_TEMP,
             WeatherEntry.COLUMN_HUMIDITY,
             WeatherEntry.COLUMN_PRESSURE,
             WeatherEntry.COLUMN_WIND_SPEED,
@@ -81,17 +82,18 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (mLocation != null &&
-                !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
-            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mDateStr = arguments.getString(DetailActivity.DATE_KEY);
+        }
+
+        if (savedInstanceState != null) {
+            mLocation = savedInstanceState.getString(LOCATION_KEY);
+        }
+
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
@@ -106,8 +108,18 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Bundle arguments = getArguments();
+        if (arguments != null && arguments.containsKey(DetailActivity.DATE_KEY) &&
+                mLocation != null &&
+                !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
+            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.v(LOG_TAG, "in onCreateOptionsMenu");
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.detailfragment, menu);
 
@@ -128,36 +140,31 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT,
-                mForecast + FORECAST_SHARE_HASHTAG);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mForecast + FORECAST_SHARE_HASHTAG);
         return shareIntent;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             mLocation = savedInstanceState.getString(LOCATION_KEY);
         }
-        super.onActivityCreated(savedInstanceState);
+
+        Bundle arguments = getArguments();
+        if (arguments != null && arguments.containsKey(DetailActivity.DATE_KEY)) {
+            getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+        }
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.v(LOG_TAG, "In onCreateLoader");
-        Intent intent = getActivity().getIntent();
-        if (intent == null || !intent.hasExtra(DetailActivity.DATE_KEY)) {
-            return null;
-        }
-        String forecastDate = intent.getStringExtra(DetailActivity.DATE_KEY);
-
         // Sort order:  Ascending, by date.
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATETEXT + " ASC";
 
         mLocation = Utility.getPreferredLocation(getActivity());
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                mLocation, forecastDate);
-        Log.v(LOG_TAG, weatherForLocationUri.toString());
+                mLocation, mDateStr);
 
         // Now create and return a CursorLoader that will take care of
         // creating a Cursor for the data being displayed.
