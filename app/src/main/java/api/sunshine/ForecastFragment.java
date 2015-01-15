@@ -1,5 +1,6 @@
 package api.sunshine;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import java.util.Date;
 import api.sunshine.data.WeatherContract;
 import api.sunshine.data.WeatherContract.LocationEntry;
 import api.sunshine.data.WeatherContract.WeatherEntry;
+import api.sunshine.service.SunshineService;
 
 
 /**
@@ -152,8 +154,10 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
     }
 
     private void updateWeather() {
-        String location = Utility.getPreferredLocation(getActivity());
-        new FetchWeatherTask(getActivity()).execute(location);
+        Intent intent = new Intent(getActivity(), SunshineService.class);
+        intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
+                Utility.getPreferredLocation(getActivity()));
+        getActivity().startService(intent);
     }
 
     @Override

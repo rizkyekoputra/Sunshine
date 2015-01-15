@@ -38,6 +38,8 @@
         <provider
             android:authorities="api.sunshine"
             android:name=".data.WeatherProvider" />
+        
+        <service android:name=".service.SunshineService"/>
     </application>
 
 </manifest>

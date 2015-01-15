@@ -127,8 +127,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         // Get and insert the new weather information into the database
         Vector<ContentValues> cVVector = new Vector<ContentValues>(weatherArray.length());
 
-        String[] resultStrs = new String[numDays];
-
         for(int i = 0; i < weatherArray.length(); i++) {
             // For now, using the format "Day, description, hi/low"
             // These are the values that will be collected.
@@ -194,12 +192,12 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... params){
+    protected Void doInBackground(String... params) {
 
         if (params.length == 0) {
             return null;
         }
-        String locationQery = params[0];
+        String locationQuery = params[0];
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -261,15 +259,12 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 return null;
             }
             forecastJsonStr = buffer.toString();
-
-            //Log.v(LOG_TAG, "Forecast JSON String: " + forecastJsonStr);
-
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
             return null;
-        } finally{
+        } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
@@ -283,7 +278,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         }
 
         try {
-            getWeatherDataFromJson(forecastJsonStr, numDays, locationQery);
+            getWeatherDataFromJson(forecastJsonStr, numDays, locationQuery);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
