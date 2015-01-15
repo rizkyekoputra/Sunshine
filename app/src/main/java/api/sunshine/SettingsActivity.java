@@ -62,7 +62,7 @@ public class SettingsActivity extends PreferenceActivity
                         .getDefaultSharedPreferences(preference.getContext())
                         .getString(preference.getKey(), ""));
 
-        mBindingPreference= false;
+        mBindingPreference = false;
     }
 
     @Override
