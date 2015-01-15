@@ -8,11 +8,11 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/ForecastTheme"
-            android:label="@string/app_name" >
+            android:name="api.sunshine.MainActivity"
+            android:theme="@style/ForecastTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name="api.sunshine.DetailActivity"
             android:label="@string/title_activity_detail"
             android:parentActivityName=".MainActivity" >
             <meta-data
@@ -28,7 +28,7 @@
                 android:value="api.sunshine.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="api.sunshine.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity" >
             <meta-data
