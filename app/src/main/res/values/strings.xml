@@ -98,4 +98,6 @@
     <!-- SyncAdapter related -->
     <string name="sync_account_type">example.com</string>
     <string name="sync_authority">"api.sunshine"</string>
+    <string name="sync_account_type">sunshine.example.com</string>
+    <string name="content_authority">api.sunshine</string>
 </resources>
