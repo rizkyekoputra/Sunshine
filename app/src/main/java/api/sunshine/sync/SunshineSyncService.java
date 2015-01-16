@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import java.util.Objects;
-
 /**
  * Created by Rizky Eko Putra on 1/16/2015.
  */
 public class SunshineSyncService extends Service {
-    private static final Objects sSyncAdapterLock = new Objects();
+    private static final Object sSyncAdapterLock = new Object();
     private static SunshineSyncAdapter sSunshineSyncAdapter = null;
 
     @Override
